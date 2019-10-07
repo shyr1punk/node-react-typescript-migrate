@@ -6,9 +6,9 @@ const FILTER_TITLES = {
   SHOW_COMPLETED: 'Completed'
 };
 
-type Filter = keyof typeof FILTER_TITLES;
+export type Filter = keyof typeof FILTER_TITLES;
 
-interface Props {
+export interface FooterProps {
   activeCount: number;
   completedCount: number;
   filter: string;
@@ -16,7 +16,7 @@ interface Props {
   onClearCompleted: () => void;
 }
 
-export default class Footer extends React.Component<Props> {
+export default class Footer extends React.Component<FooterProps> {
 
   renderFilterLink(filter: Filter) {
     const selectedClass = filter === this.props.filter ? 'selected' : '';

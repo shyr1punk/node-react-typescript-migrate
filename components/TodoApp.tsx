@@ -2,24 +2,30 @@ import React from 'react';
 
 import Utils from '../utils/utils';
 
-import Header from './Header';
-import TodoList from './TodoList';
-import Footer from './Footer';
+import Header, { HeaderProps } from './Header';
+import TodoList, { TodoListProps }  from './TodoList';
+import Footer, { Filter, FooterProps } from './Footer';
+import { Data } from './TodoItem';
 
 const TODO_FILTER = {
   'SHOW_ALL': () => true,
-  'SHOW_ACTIVE': task => !task.completed,
-  'SHOW_COMPLETED': task => task.completed
+  'SHOW_ACTIVE': (task: Data) => !task.completed,
+  'SHOW_COMPLETED': (task: Data) => task.completed
 };
 
-export default class TodoApp extends React.Component {
+interface State {
+  tasks: Data[];
+  filter: Filter;
+}
 
-  state = {
+export default class TodoApp extends React.Component<{}, State> {
+
+  state: State = {
     tasks: [],
     filter: 'SHOW_ALL'
   };
 
-  handleAddTask = (value) => {
+  handleAddTask: HeaderProps['addTask'] = (value) => {
     let newTasks = this.state.tasks.concat({
       id: Utils.generateId(),
       name: value,
@@ -30,7 +36,7 @@ export default class TodoApp extends React.Component {
     this.setState({tasks: newTasks});
   };
 
-  handleEditTask = (id, value) => {
+  handleEditTask: TodoListProps['onEditTask'] = (id, value) => {
     let newTasks = this.state.tasks.map((task) => {
       if (id == task.id) {
         task.name = value;
@@ -42,13 +48,13 @@ export default class TodoApp extends React.Component {
     this.setState({tasks: newTasks});
   };
 
-  handleDestroyTask = (id) => {
+  handleDestroyTask: TodoListProps['onDestroyTask'] = (id) => {
     let newTasks = this.state.tasks.filter((task) => id != task.id);
 
     this.setState({tasks: newTasks});
   };
 
-  handleToggle = (id) => {
+  handleToggle: TodoListProps['onToggleTask'] = (id) => {
     let newTasks = this.state.tasks.map((task) => {
       if (id == task.id) {
         task.completed = !task.completed;
@@ -60,7 +66,7 @@ export default class TodoApp extends React.Component {
     this.setState({tasks: newTasks});
   };
 
-  handleToggleAll = (status) => {
+  handleToggleAll: TodoListProps["onToggleAll"] = (status) => {
     let newTasks = this.state.tasks.map((task) => {
       task.completed = status;
 
@@ -70,7 +76,7 @@ export default class TodoApp extends React.Component {
     this.setState({tasks: newTasks});
   };
 
-  handleFilter = (filter) => {
+  handleFilter: FooterProps['onFilter'] = (filter) => {
     this.setState({filter: filter});
   };
 
@@ -80,7 +86,7 @@ export default class TodoApp extends React.Component {
     this.setState({tasks: newTasks});
   };
 
-  renderFooter(completedCount) {
+  renderFooter(completedCount: number) {
     const activeCount = this.state.tasks.length - completedCount;
 
     if (this.state.tasks.length) {

@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface Props {
+export interface HeaderProps {
   addTask: (text: string) => void;
 }
 
-export default class Header extends React.Component<Props> {
+export default class Header extends React.Component<HeaderProps> {
 
   handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode === 13) {

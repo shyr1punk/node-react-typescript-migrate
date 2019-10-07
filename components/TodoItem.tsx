@@ -5,6 +5,7 @@ export interface Data {
   id: string;
   name: string;
   completed: boolean;
+  created_at: Date;
 }
 
 export interface TodoItemProps {
