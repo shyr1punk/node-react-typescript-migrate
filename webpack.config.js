@@ -1,6 +1,6 @@
 module.exports = {
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
 
   mode: 'development',
@@ -33,6 +33,9 @@ module.exports = {
           "@babel/plugin-proposal-class-properties"
         ]
       }
+    }, {
+      test: /(\.tsx?)$/,
+      loader: 'awesome-typescript-loader'
     }]
   }
 };
