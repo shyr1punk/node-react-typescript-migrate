@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes, { string } from 'prop-types';
 
-interface Data {
+export interface Data {
   id: string;
   name: string;
   completed: boolean;
 }
 
-interface Props {
+export interface TodoItemProps {
   data: Data;
   onDestroyTask: (id?: string) => void;
   onEditTask: (id: string, val: string) => void;
@@ -19,7 +19,7 @@ interface State {
   editText: string;
 }
 
-export default class TodoItem extends React.Component<Props, State> {
+export default class TodoItem extends React.Component<TodoItemProps, State> {
 
   state: Readonly<State> = {
     editing: false,

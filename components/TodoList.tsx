@@ -1,20 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import TodoItem from './TodoItem';
+import TodoItem, { Data, TodoItemProps } from './TodoItem';
 
-export default class TodoList extends React.Component {
 
-  static propTypes = {
-    dataSource: PropTypes.array,
-    onDestroyTask: PropTypes.func,
-    onEditTask: PropTypes.func,
-    onToggleTask: PropTypes.func,
-    onToggleAll: PropTypes.func
-  };
+type TodoItemCallbacks = Pick<TodoItemProps, 'onDestroyTask' | 'onEditTask' | 'onToggleTask'>
 
-  handleToggle = (event) => {
-    this.props.onToggleAll(event.target.checked);
+interface Props extends TodoItemCallbacks {
+  dataSource: Data[];
+  onToggleAll: (checked:  boolean) => void;
+}
+
+export default class TodoList extends React.Component<Props> {
+
+  handleToggle = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    this.props.onToggleAll(event.currentTarget.checked);
   };
 
   renderToggleAll() {
