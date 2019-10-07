@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-export default class Header extends React.Component {
+interface Props {
+  addTask: (text: string) => void;
+}
 
-  static propTypes = {
-    addTask: PropTypes.func
-  };
+export default class Header extends React.Component<Props> {
 
-  handleKeyDown = (event) => {
+  handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      this.props.addTask(event.target.value);
-      event.target.value = '';
+      this.props.addTask(event.currentTarget.value);
+      event.currentTarget.value = '';
     }
   };
 
