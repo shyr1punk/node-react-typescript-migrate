@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const FILTER_TITLES = {
   SHOW_ALL: 'All',
@@ -7,17 +6,19 @@ const FILTER_TITLES = {
   SHOW_COMPLETED: 'Completed'
 };
 
-export default class Footer extends React.Component {
+type Filter = keyof typeof FILTER_TITLES;
 
-  static propTypes = {
-    activeCount: PropTypes.number,
-    completedCount: PropTypes.number,
-    filter: PropTypes.string,
-    onFilter: PropTypes.func,
-    onClearCompleted: PropTypes.func
-  };
+interface Props {
+  activeCount: number;
+  completedCount: number;
+  filter: string;
+  onFilter: (filter: Filter) => void;
+  onClearCompleted: () => void;
+}
 
-  renderFilterLink(filter) {
+export default class Footer extends React.Component<Props> {
+
+  renderFilterLink(filter: Filter) {
     const selectedClass = filter === this.props.filter ? 'selected' : '';
 
     return (
@@ -44,7 +45,7 @@ export default class Footer extends React.Component {
           <strong>{this.props.activeCount}</strong> item left
         </span>
         <ul className="filters">
-          {['SHOW_ALL', 'SHOW_ACTIVE', 'SHOW_COMPLETED'].map(filter =>
+          {(['SHOW_ALL', 'SHOW_ACTIVE', 'SHOW_COMPLETED'] as Filter[]).map(filter =>
             <li key={filter}>
               {this.renderFilterLink(filter)}
             </li>
