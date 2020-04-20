@@ -1,15 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-export default class TodoItem extends React.Component {
-    static propTypes = {
-        data: PropTypes.object,
-        onDestroyTask: PropTypes.func,
-        onEditTask: PropTypes.func,
-        onToggleTask: PropTypes.func
-    };
+export interface TodoItemProps {
+    data: Task;
+    onDestroyTask(id: string): void;
+    onEditTask(id: string, name: string): void;
+    onToggleTask(id: string): void;
+}
 
-    state = {
+interface TodoItemState {
+    editing: boolean;
+    editText: string;
+}
+
+export default class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
+    state: TodoItemState = {
         editing: false,
         editText: this.props.data.name
     };
@@ -24,7 +28,7 @@ export default class TodoItem extends React.Component {
             this.setState({ editing: false, editText: val });
             this.props.onEditTask(this.props.data.id, val);
         } else {
-            this.props.onDestroyTask();
+            this.props.onDestroyTask(this.props.data.id);
         }
     };
 
@@ -36,7 +40,7 @@ export default class TodoItem extends React.Component {
         this.props.onDestroyTask(this.props.data.id);
     };
 
-    handleKeyDown = (event) => {
+    handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.which === 27) {
             this.setState({ editing: false, editText: this.props.data.name });
         } else if (event.which === 13) {
@@ -44,7 +48,7 @@ export default class TodoItem extends React.Component {
         }
     };
 
-    handleChange = (event) => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ editText: event.target.value });
     };
 
