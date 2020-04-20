@@ -8,7 +8,7 @@ module.exports = {
   context: __dirname,
 
   entry: {
-    app: './app.jsx'
+    app: './app.tsx'
   },
 
   output: {
