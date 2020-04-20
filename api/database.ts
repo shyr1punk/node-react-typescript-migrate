@@ -1,3 +1,5 @@
+import { ResponseTasksGet, RequestPostBody, ResponseStatusOk, RequestPutBody } from "../server";
+
 const base = 'http://0.0.0.0:3000';
 
 const commonHeaders = {
@@ -5,12 +7,12 @@ const commonHeaders = {
     'Content-Type': 'application/json'
 };
 
-function fetchTasks() {
+function fetchTasks(): Promise<ResponseTasksGet> {
     return fetch(`${base}/tasks`)
         .then(res => res.json());
 }
 
-function saveTask(task) {
+function saveTask(task: RequestPostBody): Promise<ResponseStatusOk> {
     return fetch(`${base}/tasks`, {
         method: 'POST',
         headers: commonHeaders,
@@ -19,7 +21,7 @@ function saveTask(task) {
         .then(res => res.json());
 }
 
-function updateTask(id, newFields) {
+function updateTask(id: string, newFields: RequestPutBody): Promise<ResponseStatusOk> {
     return fetch(`${base}/tasks/${id}`, {
         method: 'PUT',
         headers: commonHeaders,
@@ -28,7 +30,7 @@ function updateTask(id, newFields) {
         .then(res => res.json());
 }
 
-function deleteTask(id) {
+function deleteTask(id: string): Promise<ResponseStatusOk> {
     return fetch(`${base}/tasks/${id}`, {
         method: 'DELETE',
         headers: commonHeaders
