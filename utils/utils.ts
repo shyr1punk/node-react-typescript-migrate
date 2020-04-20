@@ -1,7 +1,7 @@
 export default class Utils {
 
     static generateId() {
-        let random;
+        let random: number;
         let uuid = '';
 
         for (let i = 0; i < 32; i++) {
