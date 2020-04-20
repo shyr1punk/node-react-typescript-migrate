@@ -1,12 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Header = ({ addTask }) => {
-    const handleKeyDown = React.useCallback((event) => {
+export interface HeaderProps {
+    addTask(name: string): void;
+}
+
+const Header: React.FC<HeaderProps> = ({ addTask }) => {
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.keyCode === 13) {
             event.preventDefault();
-            addTask(event.target.value);
-            event.target.value = '';
+            addTask(event.currentTarget.value);
+            event.currentTarget.value = '';
         }
     }, [addTask]);
 
@@ -23,9 +26,5 @@ const Header = ({ addTask }) => {
         </header>
     );
 }
-
-Header.propTypes = {
-    addTask: PropTypes.func.isRequired
-};
 
 export default Header;
