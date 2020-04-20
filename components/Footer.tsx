@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const FILTER_TITLES = {
     SHOW_ALL: 'All',
@@ -7,7 +6,17 @@ const FILTER_TITLES = {
     SHOW_COMPLETED: 'Completed'
 };
 
-const Footer = ({
+export type Filter = keyof typeof FILTER_TITLES;
+
+export interface FooterProps {
+    activeCount: number;
+    completedCount: number;
+    filter: Filter;
+    onFilter(filter: Filter): void;
+    onClearCompleted(): void;
+}
+
+const Footer: React.FC<FooterProps> = ({
     activeCount,
     completedCount,
     filter,
@@ -20,7 +29,7 @@ const Footer = ({
                 <strong>{activeCount}</strong> item left
             </span>
             <ul className="filters">
-                {['SHOW_ALL', 'SHOW_ACTIVE', 'SHOW_COMPLETED'].map(f =>
+                {(['SHOW_ALL', 'SHOW_ACTIVE', 'SHOW_COMPLETED'] as Filter[]).map(f =>
                     <li key={f}>
                         <a
                             className={f === filter ? 'selected' : ''}
@@ -39,14 +48,6 @@ const Footer = ({
             ) : null}
         </footer>
     );
-}
-
-Footer.propTypes = {
-    activeCount: PropTypes.number,
-    completedCount: PropTypes.number,
-    filter: PropTypes.string,
-    onFilter: PropTypes.func,
-    onClearCompleted: PropTypes.func
 }
 
 export default Footer;
