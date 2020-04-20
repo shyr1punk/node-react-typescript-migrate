@@ -4,17 +4,22 @@ import Utils from '../utils/utils';
 
 import Header from './Header';
 import TodoList from './TodoList';
-import Footer from './Footer';
+import Footer, { Filter } from './Footer';
 import API from '../api/database';
 
 const TODO_FILTER = {
     'SHOW_ALL': () => true,
-    'SHOW_ACTIVE': task => !task.completed,
-    'SHOW_COMPLETED': task => task.completed
+    'SHOW_ACTIVE': (task: Task) => !task.completed,
+    'SHOW_COMPLETED': (task: Task) => task.completed
 };
 
-export default class TodoApp extends React.Component {
-    state = {
+interface TodoAppState {
+    tasks: Task[];
+    filter: Filter;
+}
+
+export default class TodoApp extends React.Component<{}, TodoAppState> {
+    state: TodoAppState = {
         tasks: [],
         filter: 'SHOW_ALL'
     };
@@ -27,7 +32,7 @@ export default class TodoApp extends React.Component {
         })
     }
 
-    handleAddTask = (value) => {
+    handleAddTask = (value: string) => {
         const newTask = {
             id: Utils.generateId(),
             name: value,
@@ -41,7 +46,7 @@ export default class TodoApp extends React.Component {
         });
     };
 
-    handleEditTask = (id, name) => {
+    handleEditTask = (id: string, name: string) => {
         let newTasks = this.state.tasks.map((task) => {
             if (id == task.id) {
                 task.name = name;
@@ -57,7 +62,7 @@ export default class TodoApp extends React.Component {
         this.setState({ tasks: newTasks });
     };
 
-    handleDestroyTask = (id) => {
+    handleDestroyTask = (id: string) => {
         API.deleteTask(id);
 
         let newTasks = this.state.tasks.filter((task) => id != task.id);
@@ -65,7 +70,7 @@ export default class TodoApp extends React.Component {
         this.setState({ tasks: newTasks });
     };
 
-    handleToggle = (id) => {
+    handleToggle = (id: string) => {
         let newTasks = this.state.tasks.map((task) => {
             if (id == task.id) {
                 task.completed = !task.completed;
@@ -81,7 +86,7 @@ export default class TodoApp extends React.Component {
         this.setState({ tasks: newTasks });
     };
 
-    handleToggleAll = (status) => {
+    handleToggleAll = (status: boolean) => {
         let newTasks = this.state.tasks.map((task) => {
             task.completed = status;
 
@@ -91,14 +96,14 @@ export default class TodoApp extends React.Component {
         this.setState({ tasks: newTasks });
     };
 
-    handleFilter = (filter) => {
+    handleFilter = (filter: Filter) => {
         this.setState({ filter });
     };
 
     handleClearCompleted = () => {
         let newTasks = this.state.tasks.filter((task) => {
             if (task.completed) {
-                API.deleteTask();
+                API.deleteTask(task.id);
 
                 return false;
             } else {
@@ -109,7 +114,7 @@ export default class TodoApp extends React.Component {
         this.setState({ tasks: newTasks });
     };
 
-    renderFooter(completedCount) {
+    renderFooter(completedCount: number) {
         const activeCount = this.state.tasks.length - completedCount;
 
         if (this.state.tasks.length) {
