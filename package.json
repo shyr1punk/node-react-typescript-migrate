@@ -4,7 +4,8 @@
   "description": "React Typescript Migrate",
   "main": "app.jsx",
   "scripts": {
-    "server": "node server/index.js",
+    "server": "node dist/index.js",
+    "server:build": "tsc -p tsconfig.server.json",
     "server:watch": "TS_NODE_FILES=1 nodemon server/index.ts -r ts-node/register --ignore 'db.json'",
     "start": "webpack-dev-server",
     "build": "webpack"
